@@ -60,7 +60,14 @@ body {
     line-height: 0;
     border-radius: 12px;
     border: 2px solid #d4af37; /* El marco dorado */
-    overflow: hidden;
+    background-color: #003840;  /* El mismo fondo de la tarjeta */
+    padding: 10px;             /* El secreto: espacio de sobra para que la cámara lea bien */
+}
+
+#qr { 
+    display: block; 
+    width: 150px;  
+    height: 150px; 
 }
 
 /* AQUÍ ESTÁ EL TRUCO PARA QUE NO SE PIXELE */
