@@ -19,7 +19,7 @@ body {
     max-width: 300px; 
     text-align: center;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    border: 2px solid #d4af37;
+    border: 2px solid #909EAE;
 }
 
 .brand-header {
@@ -42,14 +42,14 @@ body {
 .user-name {
     font-size: 18px; 
     font-weight: 500;
-    color: #ffffff;
+    color: #909EAE;
     margin: 15px 0 5px 0;
     letter-spacing: 0.8px;
 }
 
 .user-title {
     font-size: 9px;
-    color: #799a9f; 
+    color: #909EAE; 
     margin: 0 0 15px 0;
     text-transform: uppercase;
     letter-spacing: 1.2px;
@@ -59,7 +59,7 @@ body {
     display: inline-block;
     line-height: 0;
     border-radius: 12px;
-    border: 2px solid #d4af37; /* El marco dorado */
+    border: 2px solid #909EAE; /* El marco dorado */
     background-color: #003840;  /* El mismo fondo de la tarjeta */
     padding: 10px;             /* El secreto: espacio de sobra para que la cámara lea bien */
 }
