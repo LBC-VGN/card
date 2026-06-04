@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         element: document.getElementById('qr'),
         size: 450, // Tu súper resolución HD
         background: '#003840',
-        foreground: '#d4af37',
+        foreground: '#909EAE',
         level: 'M',
         value: vcard
     });
