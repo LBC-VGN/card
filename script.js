@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
         size: 600,           // Subimos a 600 para que al reescalar con CSS a 150px sobremuree y se vea HD
         level: 'H',          // Nivel High de corrección de errores (por si el platino brilla mucho)
         background: '#003840', // Seteamos el MISMO azul del CSS para que no haya bordes fantasma
-        foreground: '#909EAE', // El Platino oficial de Doña Marta. Contraste puro sobre el azul
+        foreground: '#F3F4F6', // El Platino oficial de Doña Marta. Contraste puro sobre el azul
         value: vcard
     });
 });
