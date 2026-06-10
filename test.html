@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitchell | VGN S.A.</title>
+    <!-- Premium Typography & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* 1. INITIAL VARIABLES & THEME SETUP */
+        :root {
+            --brand-teal: #003840;      /* Deep Petrol Teal */
+            --brand-silver: #F3F4F6;    /* Bright Silver Accent */
+            --slate-dark: #0a1118;      /* Deep premium background shadow */
+            --white: #ffffff;
+            --font-title: 'Poppins', sans-serif;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0c2024 0%, var(--slate-dark) 100%);
+            color: var(--brand-silver);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* 2. 3D CARD INTERFACE CONTAINER (60 FPS Performance) */
+        .vcard-perspective {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .vcard {
+            background-color: var(--brand-teal);
+            border: 1px solid rgba(243, 244, 246, 0.15);
+            border-radius: 24px;
+            width: 100%;
+            padding: 35px 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            position: relative;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        /* Holographic Glare Effect on Hover */
+        .vcard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(243, 244, 246, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 3;
+            mix-blend-mode: overlay;
+        }
+
+        /* 3. MULTILINGUAL SWITCHER (ES, IT, EN, PT) */
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 25px;
+            z-index: 4;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(243, 244, 246, 0.08);
+            border: 1px solid rgba(243, 244, 246, 0.15);
+            color: var(--brand-silver);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-title);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background-color: var(--brand-silver);
+            color: var(--brand-teal);
+            border-color: var(--brand-silver);
+            transform: translateY(-2px);
+        }
+
+        /* 4. PREMIUM CARD ELEMENTS & PROFILE STYLING */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+            transform: translateZ(30px); /* 3D layer pop */
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .avatar-ring {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--brand-silver) 30%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #0b1c20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--brand-teal);
+        }
+
+        .avatar i {
+            font-size: 55px;
+            color: var(--brand-silver);
+        }
+
+        /* Hardware Badge badge pop */
+        .status-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #22c55e;
+            color: var(--white);
+            border: 3px solid var(--brand-teal);
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .profile-name {
+            font-family: var(--font-title);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--brand-silver);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-title {
+            font-size: 15px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .profile-company {
+            font-family: var(--font-title);
+            font-size: 16px;
+            color: var(--brand-silver);
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        /* 5. INTERACTIVE CTA ACTION BUTTONS */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            transform: translateZ(20px);
+        }
+
+        .action-card {
+            background: rgba(243, 244, 246, 0.05);
+            border: 1px solid rgba(243, 244, 246, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--brand-silver);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .action-card i {
+            font-size: 22px;
+            color: var(--brand-silver);
+            opacity: 0.85;
+            transition: transform 0.25s ease;
+        }
+
+        .action-card span {
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font-title);
+        }
+
+        /* Tactile & Premium Hover States */
+        .action-card:hover {
+            background: rgba(243, 244, 246, 0.12);
+            border-color: rgba(243, 244, 246, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .action-card:hover i {
+            transform: scale(1.15) rotate(-5deg);
+            opacity: 1;
+        }
+
+        .action-card:active {
+            transform: translateY(-1px) scale(0.97);
+        }
+
+        /* Map Location Toggle Section (Showroom / Factory) */
+        .location-section {
+            background: rgba(10, 17, 24, 0.4);
+            border: 1px solid rgba(243, 244, 246, 0.08);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateZ(15px);
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .location-icon-wrapper {
+            background: rgba(243, 244, 246, 0.08);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-silver);
+        }
+
+        .location-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .location-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-silver);
+        }
+
+        .location-btn {
+            background: transparent;
+            border: 1px solid rgba(243, 244, 246, 0.2);
+            color: var(--brand-silver);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .location-btn:hover {
+            background: var(--brand-silver);
+            color: var(--brand-teal);
+            border-color: var(--brand-silver);
+        }
+
+        /* 6. PRIMARY EXPORT BUTTON (Subtle Guidance Pulse) */
+        .save-btn {
+            width: 100%;
+            background-color: var(--brand-silver);
+            color: var(--brand-teal);
+            border: none;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: var(--font-title);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(40px); /* Primary layer pop */
+            position: relative;
+        }
+
+        /* Subtle mechanical low-frequency pulse */
+        .save-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 16px;
+            box-shadow: 0 0 0 0 rgba(243, 244, 246, 0.5);
+            animation: radarPulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .save-btn:hover {
+            transform: translateZ(40px) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+            background-color: var(--white);
+        }
+
+        .save-btn:active {
+            transform: translateZ(40px) translateY(-1px) scale(0.98);
+        }
+
+        @keyframes radarPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(243, 244, 246, 0.6);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(243, 244, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(243, 244, 246, 0);
+            }
+        }
+
+        /* 7. NATURAL LOAD ENTRANCE (Cubic-Bezier, Staggered) */
+        @keyframes customFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px) rotateX(4deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        .animate-cascade {
+            opacity: 0;
+            animation: customFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-0 { animation-delay: 0.1s; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.4s; }
+        .delay-4 { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+
+    <div class="vcard-perspective">
+        <!-- Main vCard Wrapper -->
+        <main class="vcard animate-cascade delay-0" id="interactive-card">
+            
+            <!-- Language Switcher Interface -->
+            <div class="lang-switcher animate-cascade delay-1">
+                <button class="lang-btn active" onclick="switchLanguage('es')">ES</button>
+                <button class="lang-btn" onclick="switchLanguage('it')">IT</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="switchLanguage('pt')">PT</button>
+            </div>
+
+            <!-- Profile Info Module -->
+            <section class="profile-section animate-cascade delay-2">
+                <div class="avatar-container">
+                    <div class="avatar-ring">
+                        <div class="avatar">
+                            <!-- Premium Tech Icon placeholder inside brand layout -->
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                    </div>
+                    <div class="status-badge" title="Online / Active">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                </div>
+                <h1 class="profile-name">Mitchell</h1>
+                <p class="profile-title" id="txt-title">Perito en Electrónica Industrial</p>
+                <div class="profile-company">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span>VGN S.A. Digital Hub</span>
+                </div>
+            </section>
+
+            <!-- Grid Actions -->
+            <nav class="actions-grid animate-cascade delay-3">
+                <a href="tel:+595900000000" class="action-card">
+                    <i class="fa-solid fa-phone"></i>
+                    <span id="txt-call">Llamar</span>
+                </a>
+                <a href="mailto:mitchell@vgn.com.py" class="action-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span id="txt-email">Escribir</span>
+                </a>
+                <a href="https://wa.me/595900000000" class="action-card">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="https://github.com" class="action-card">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+            </nav>
+
+            <!-- Factory vs Showroom Location Tracker -->
+            <section class="location-section animate-cascade delay-4">
+                <div class="location-info">
+                    <div class="location-icon-wrapper">
+                        <i class="fa-solid fa-industry"></i>
+                    </div>
+                    <div class="location-text">
+                        <span class="location-label" id="txt-loc-label">Ubicación actual</span>
+                        <span class="location-title" id="txt-loc-val">Fábrica (M.R.A.)</span>
+                    </div>
+                </div>
+                <a href="https://maps.google.com" target="_blank" class="location-btn" id="txt-map-btn">Ver Mapa</a>
+            </section>
+
+            <!-- Export VCF Trigger Button -->
+            <button class="save-btn animate-cascade delay-4" onclick="generateAndSaveVCF()">
+                <i class="fa-solid fa-user-plus"></i>
+                <span id="txt-save-btn">Guardar Contacto</span>
+            </button>
+
+        </main>
+    </div>
+
+    <script>
+        /* 1. MULTILINGUAL TRANSLATION DATA ENGINE */
+        const translations = {
+            es: {
+                title: "Perito en Electrónica Industrial",
+                call: "Llamar",
+                email: "Escribir",
+                locLabel: "Ubicación actual",
+                locVal: "Fábrica (M.R.A.)",
+                mapBtn: "Ver Mapa",
+                saveBtn: "Guardar Contacto"
+            },
+            it: {
+                title: "Esperto in Elettronica Industriale",
+                call: "Chiamare",
+                email: "Scrivere",
+                locLabel: "Posizione attuale",
+                locVal: "Fabbrica (M.R.A.)",
+                mapBtn: "Vedi Mappa",
+                saveBtn: "Salva Contatto"
+            },
+            en: {
+                title: "Industrial Electronics Specialist",
+                call: "Call",
+                email: "Email",
+                locLabel: "Current Location",
+                locVal: "Factory (M.R.A.)",
+                mapBtn: "Open Map",
+                saveBtn: "Save Contact"
+            },
+            pt: {
+                title: "Especialista em Eletrônica Industrial",
+                call: "Ligar",
+                email: "E-mail",
+                locLabel: "Localização atual",
+                locVal: "Fábrica (M.R.A.)",
+                mapBtn: "Ver Mapa",
+                saveBtn: "Salvar Contato"
+            }
+        };
+
+        function switchLanguage(lang) {
+            // Update active state on switcher buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.textContent.toLowerCase() === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Swap interface strings dynamically
+            document.getElementById('txt-title').textContent = translations[lang].title;
+            document.getElementById('txt-call').textContent = translations[lang].call;
+            document.getElementById('txt-email').textContent = translations[lang].email;
+            document.getElementById('txt-loc-label').textContent = translations[lang].locLabel;
+            document.getElementById('txt-loc-val').textContent = translations[lang].locVal;
+            document.getElementById('txt-map-btn').textContent = translations[lang].mapBtn;
+            document.getElementById('txt-save-btn').textContent = translations[lang].saveBtn;
+        }
+
+        /* 2. 3D TILT & GLOW CALCULATIONS (GPU Layer Rendering) */
+        const card = document.getElementById('interactive-card');
+        
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x coordinate inside the element.
+            const y = e.clientY - rect.top;  // y coordinate inside the element.
+            
+            // Calculate mouse position relative to card center for perspective angles
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((centerY - y) / centerY) * 10; // Max angle limits 10deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            // Apply calculated 3D parameters
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
+            // Send dynamic coordinates to CSS custom variables for realistic light reflection
+            card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+            card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+        });
+
+        // Reset Card Position smoothly upon cursor exit
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.4s ease-out';
+            card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            card.style.setProperty('--mouse-x', '50%');
+            card.style.setProperty('--mouse-y', '50%');
+        });
+
+        // Restore fast transition on entry
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'transform 0.08s ease-out';
+        });
+
+        /* 3. DYNAMIC VCF FILE GENERATOR ENGINE */
+        function generateAndSaveVCF() {
+            // Build absolute VCF schema parameters cleanly
+            const vcfLines = [
+                "BEGIN:VCARD",
+                "VERSION:3.0",
+                "FN:Mitchell - VGN S.A.",
+                "N:;Mitchell;;;",
+                "ORG:VGN S.A.",
+                "TITLE:Perito en Electrónica Industrial / IT",
+                "TEL;TYPE=CELL,VOICE;VALUE=uri:tel:+595900000000",
+                "EMAIL;TYPE=PREF,INTERNET:mitchell@vgn.com.py",
+                "NOTE:Industrial Automation & IT Specialist - Mariano Roque Alonso",
+                "END:VCARD"
+            ];
+            
+            const vcardContent = vcfLines.join("\r\n");
+            const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+            const url = window.URL.createObjectURL(blob);
+            
+            const downloader = document.createElement("a");
+            downloader.href = url;
+            downloader.setAttribute("download", "Mitchell_VGN.vcf");
+            document.body.appendChild(downloader);
+            downloader.click();
+            
+            // Clear memory buffers
+            document.body.removeChild(downloader);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
